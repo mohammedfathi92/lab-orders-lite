@@ -58,11 +58,17 @@ export const createTestDatabase = async (): Promise<PrismaClient> => {
     });
 
     // Import the generated Prisma client
-    // We need to clear the require cache to get the new client
-    const prismaClientPath = path.join(process.cwd(), "node_modules", ".prisma", "client");
-    delete require.cache[require.resolve(prismaClientPath)];
-    
-    const { PrismaClient: TestPrismaClient } = require(prismaClientPath);
+    // Clear the module cache to ensure we get a fresh client instance
+    // Using require.resolve to get the module path, then clearing cache
+    // Note: require.resolve() is allowed - it doesn't import, just resolves the path
+    const prismaClientPath = require.resolve("@prisma/client");
+    // Clear require cache for Prisma client
+    if (require.cache[prismaClientPath]) {
+      delete require.cache[prismaClientPath];
+    }
+    // Dynamic import after clearing cache
+    const prismaClientModule = await import("@prisma/client");
+    const TestPrismaClient = prismaClientModule.PrismaClient;
 
     const prisma = new TestPrismaClient({
       datasources: {
@@ -74,13 +80,14 @@ export const createTestDatabase = async (): Promise<PrismaClient> => {
     }) as PrismaClient;
 
     // Store cleanup function
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (prisma as any).__cleanup = async () => {
       await prisma.$disconnect();
       // Clean up database file
       if (fs.existsSync(dbPath)) {
         try {
           fs.unlinkSync(dbPath);
-        } catch (e) {
+        } catch {
           // Ignore cleanup errors
         }
       }
@@ -88,7 +95,7 @@ export const createTestDatabase = async (): Promise<PrismaClient> => {
       if (fs.existsSync(testSchemaPath)) {
         try {
           fs.unlinkSync(testSchemaPath);
-        } catch (e) {
+        } catch {
           // Ignore cleanup errors
         }
       }
@@ -104,14 +111,14 @@ export const createTestDatabase = async (): Promise<PrismaClient> => {
     if (fs.existsSync(dbPath)) {
       try {
         fs.unlinkSync(dbPath);
-      } catch (e) {
+      } catch {
         // Ignore
       }
     }
     if (fs.existsSync(testSchemaPath)) {
       try {
         fs.unlinkSync(testSchemaPath);
-      } catch (e) {
+      } catch {
         // Ignore
       }
     }
@@ -123,7 +130,9 @@ export const createTestDatabase = async (): Promise<PrismaClient> => {
 };
 
 export const cleanupTestDatabase = async (prisma: PrismaClient): Promise<void> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if ((prisma as any).__cleanup) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await (prisma as any).__cleanup();
   } else {
     await prisma.$disconnect();

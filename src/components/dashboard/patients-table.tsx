@@ -20,15 +20,6 @@ import { EmptyState } from "./empty-state";
 import { Pagination } from "@/components/ui/pagination";
 import { usePatients } from "@/hooks/use-patients";
 
-interface Patient {
-  id: string;
-  name: string;
-  dob: string;
-  phone: string | null;
-  gender: string;
-  address: string | null;
-}
-
 export function PatientsTable() {
   const router = useRouter();
   const searchParams = useSearchParams();

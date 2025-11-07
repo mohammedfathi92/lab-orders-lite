@@ -74,11 +74,11 @@ export const toast = {
 };
 
 export function Toaster() {
-  const [mounted, setMounted] = useState(false);
+  // Initialize mounted state to true on client, false on server
+  const [mounted] = useState(() => typeof window !== "undefined");
   const [toastList, setToastList] = useState<ToastData[]>([]);
 
   useEffect(() => {
-    setMounted(true);
     listeners.add(setToastList);
     return () => {
       listeners.delete(setToastList);

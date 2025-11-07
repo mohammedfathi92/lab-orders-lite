@@ -27,13 +27,13 @@ export const prisma = prismaClient.$extends({
         if (result?.deletedAt) return null;
         return result;
       },
-      async delete({ args, query }) {
+      async delete({ args }) {
         return prismaClient.user.update({
           where: args.where,
           data: { deletedAt: new Date() },
         });
       },
-      async deleteMany({ args, query }) {
+      async deleteMany({ args }) {
         return prismaClient.user.updateMany({
           where: { ...args.where, deletedAt: null },
           data: { deletedAt: new Date() },
@@ -54,13 +54,13 @@ export const prisma = prismaClient.$extends({
         if (result?.deletedAt) return null;
         return result;
       },
-      async delete({ args, query }) {
+      async delete({ args }) {
         return prismaClient.patient.update({
           where: args.where,
           data: { deletedAt: new Date() },
         });
       },
-      async deleteMany({ args, query }) {
+      async deleteMany({ args }) {
         return prismaClient.patient.updateMany({
           where: { ...args.where, deletedAt: null },
           data: { deletedAt: new Date() },
@@ -81,13 +81,13 @@ export const prisma = prismaClient.$extends({
         if (result?.deletedAt) return null;
         return result;
       },
-      async delete({ args, query }) {
+      async delete({ args }) {
         return prismaClient.test.update({
           where: args.where,
           data: { deletedAt: new Date() },
         });
       },
-      async deleteMany({ args, query }) {
+      async deleteMany({ args }) {
         return prismaClient.test.updateMany({
           where: { ...args.where, deletedAt: null },
           data: { deletedAt: new Date() },
@@ -108,13 +108,13 @@ export const prisma = prismaClient.$extends({
         if (result?.deletedAt) return null;
         return result;
       },
-      async delete({ args, query }) {
+      async delete({ args }) {
         return prismaClient.order.update({
           where: args.where,
           data: { deletedAt: new Date() },
         });
       },
-      async deleteMany({ args, query }) {
+      async deleteMany({ args }) {
         return prismaClient.order.updateMany({
           where: { ...args.where, deletedAt: null },
           data: { deletedAt: new Date() },

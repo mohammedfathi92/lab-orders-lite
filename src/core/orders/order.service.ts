@@ -2,7 +2,7 @@ import { z } from "zod";
 import { OrderRepository } from "./order.repository";
 import { TestService } from "../tests/test.service";
 import { PatientService } from "../patients/patient.service";
-import { CreateOrderDTO, UpdateOrderDTO, OrderFilters, OrderWithDetails } from "./order.types";
+import { CreateOrderDTO, UpdateOrderDTO, OrderFilters } from "./order.types";
 
 // Zod schemas for validation
 const orderStatusEnum = z.enum(["PENDING", "PROCESSING", "COMPLETED", "CANCELLED"]);

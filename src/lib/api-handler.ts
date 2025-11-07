@@ -17,7 +17,7 @@ export function apiHandler<T, TParams extends { [key: string]: string } = { [key
   // Use rest parameters to capture all arguments
   return async (
     request: NextRequest,
-    ...args: any[]
+    ...args: Array<{ params?: Promise<TParams> | TParams } | undefined>
   ): Promise<NextResponse> => {
     try {
       // Forward all arguments to the handler
