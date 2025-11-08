@@ -1,183 +1,34 @@
 # Lab Orders Lite
 
-A modern laboratory order management system built with Next.js, featuring patient management, order processing, and test configuration.
+A modern laboratory order management system built with Next.js, TypeScript, Prisma, and PostgreSQL.
+
+## Features
+
+- **Patient Management** - Create and manage patient records
+- **Test Management** - Manage laboratory tests and their configurations
+- **Order Management** - Create and track lab orders with automatic cost calculation
+- **Authentication** - Secure user authentication with NextAuth
+- **Modern UI** - Beautiful, responsive interface built with Tailwind CSS and shadcn/ui
 
 ## Tech Stack
 
-### Frontend
-- **Next.js 16** - React framework with App Router
-- **React 19** - UI library
-- **TypeScript** - Type safety
-- **Tailwind CSS 4** - Utility-first CSS framework
-- **Shadcn UI** - Component library (New York style)
-- **Inter Font** - Typography
-- **Lucide React** - Icon library
-- **React Query (TanStack Query)** - Server state management
-- **date-fns** - Date formatting
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Database**: PostgreSQL (development) / SQLite (testing)
+- **ORM**: Prisma
+- **Authentication**: NextAuth.js
+- **UI**: React, Tailwind CSS, shadcn/ui
+- **State Management**: TanStack Query
+- **Validation**: Zod
+- **Testing**: Vitest
 
-### Backend
-- **Next.js API Routes** - Serverless API endpoints
-- **Prisma** - ORM for database access
-- **PostgreSQL** - Primary database (SQLite for testing)
-- **NextAuth.js** - Authentication
-- **Zod** - Schema validation
-- **bcrypt** - Password hashing
-
-### Testing
-- **Vitest** - Unit and integration testing
-- **Supertest** - API testing
-- **Testing Library** - React component testing
-- **SQLite (in-memory)** - Test database
-
-### Development Tools
-- **ESLint** - Code linting
-- **Prettier** - Code formatting
-- **TypeScript** - Static type checking
-- **Prisma Studio** - Database GUI
-
-## Folder Structure
-
-```
-lab-orders-lite/
-├── prisma/                       # Database
-│   ├── schema.prisma             # Database schema
-│   └── seed.ts                   # Database seeding
-│
-├── src/
-│   ├── app/                      # Next.js App Router
-│   │   ├── (auth)/               # Auth route group
-│   │   │   ├── login/
-│   │   │   │   └── page.tsx
-│   │   │   └── register/
-│   │   │       └── page.tsx
-│   │   ├── api/                  # API routes
-│   │   │   ├── auth/             # Authentication endpoints
-│   │   │   │   ├── [...nextauth]/
-│   │   │   │   │   └── route.ts
-│   │   │   │   └── register/
-│   │   │   │       └── route.ts
-│   │   │   ├── patients/         # Patient CRUD
-│   │   │   │   ├── route.ts
-│   │   │   │   └── [id]/
-│   │   │   │       └── route.ts
-│   │   │   ├── tests/            # Test CRUD
-│   │   │   │   ├── route.ts
-│   │   │   │   └── [id]/
-│   │   │   │       └── route.ts
-│   │   │   └── orders/           # Order CRUD
-│   │   │       ├── route.ts
-│   │   │       └── [id]/
-│   │   │           └── route.ts
-│   │   ├── dashboard/            # Dashboard pages
-│   │   │   ├── page.tsx
-│   │   │   ├── layout.tsx
-│   │   │   ├── patients/         # Patient management
-│   │   │   │   ├── page.tsx
-│   │   │   │   ├── new/
-│   │   │   │   │   └── page.tsx
-│   │   │   │   └── [id]/
-│   │   │   │       ├── page.tsx
-│   │   │   │       └── edit/
-│   │   │   │           └── page.tsx
-│   │   │   ├── tests/            # Test management
-│   │   │   │   ├── page.tsx
-│   │   │   │   ├── new/
-│   │   │   │   │   └── page.tsx
-│   │   │   │   └── [id]/
-│   │   │   │       ├── page.tsx
-│   │   │   │       └── edit/
-│   │   │   │           └── page.tsx
-│   │   │   └── orders/           # Order management
-│   │   │       ├── page.tsx
-│   │   │       ├── new/
-│   │   │       │   └── page.tsx
-│   │   │       └── [id]/
-│   │   │           └── page.tsx
-│   │   ├── globals.css           # Global styles
-│   │   ├── layout.tsx            # Root layout
-│   │   └── page.tsx              # Home page
-│   │
-│   ├── core/                     # Core business logic
-│   │   ├── patients/             # Patient domain
-│   │   │   ├── patient.repository.ts
-│   │   │   ├── patient.service.ts
-│   │   │   ├── patient.types.ts
-│   │   │   └── index.ts
-│   │   ├── orders/               # Order domain
-│   │   │   ├── order.repository.ts
-│   │   │   ├── order.service.ts
-│   │   │   ├── order.types.ts
-│   │   │   └── index.ts
-│   │   ├── tests/                # Test domain
-│   │   │   ├── test.repository.ts
-│   │   │   ├── test.service.ts
-│   │   │   ├── test.types.ts
-│   │   │   └── index.ts
-│   │   └── services.ts           # Service exports
-│   │
-│   ├── lib/                      # Utility libraries
-│   │   ├── auth.ts               # NextAuth configuration
-│   │   ├── prisma.ts             # Prisma client instance
-│   │   ├── api-handler.ts        # API route handler wrapper
-│   │   ├── api-response.ts       # API response utilities
-│   │   ├── errors.ts             # Custom error classes
-│   │   ├── logger.ts             # Logging utility
-│   │   ├── utils.ts              # Utility functions
-│   │   └── constants.ts          # Constants
-│   │
-│   ├── components/               # React components
-│   │   ├── dashboard/            # Dashboard-specific components
-│   │   │   ├── empty-state.tsx
-│   │   │   ├── orders-table.tsx
-│   │   │   ├── patients-table.tsx
-│   │   │   ├── sidebar-nav.tsx
-│   │   │   ├── stats-cards.tsx
-│   │   │   └── tests-table.tsx
-│   │   ├── providers/            # Context providers
-│   │   │   ├── query-provider.tsx    # React Query provider
-│   │   │   └── session-provider.tsx  # NextAuth provider
-│   │   ├── ui/                   # Shadcn UI components
-│   │   │   ├── button.tsx
-│   │   │   ├── card.tsx
-│   │   │   ├── input.tsx
-│   │   │   ├── pagination.tsx
-│   │   │   ├── select.tsx
-│   │   │   └── ...
-│   │   ├── hide-dev-panel.tsx
-│   │   └── logout-button.tsx
-│   │
-│   ├── hooks/                    # Custom React hooks
-│   │   ├── use-patients.ts       # Patient data hooks
-│   │   ├── use-orders.ts         # Order data hooks
-│   │   └── use-mobile.ts
-│   │
-│   ├── tests/                    # Test files
-│   │   ├── integration/          # Integration tests
-│   │   │   ├── api-orders.test.ts
-│   │   │   └── api-patients.test.ts
-│   │   ├── setup/                # Test utilities
-│   │   │   ├── test-db.ts
-│   │   │   ├── test-helpers.ts
-│   │   │   └── test-utils.ts
-│   │   └── README.md
-│   │
-│   └── types/                    # TypeScript type definitions
-│       ├── api.ts
-│       └── next-auth.d.ts
-│
-├── proxy.ts                      # Next.js proxy (formerly middleware)
-├── vitest.config.ts              # Vitest configuration
-├── tsconfig.json                 # TypeScript configuration
-├── tailwind.config.ts            # Tailwind configuration
-└── package.json                  # Dependencies
-```
-
-## Setup Instructions
+## Getting Started
 
 ### Prerequisites
-- Node.js 18+ installed
-- PostgreSQL database (or SQLite for development)
-- npm or yarn package manager
+
+- Node.js 18+ 
+- PostgreSQL (for development)
+- npm or yarn
 
 ### Installation
 
@@ -219,6 +70,55 @@ lab-orders-lite/
 
 6. **Open your browser:**
    Navigate to `http://localhost:3000`
+
+## Important: Database Setup for Development vs Testing
+
+This project uses **PostgreSQL for development** and **SQLite for testing**. Here's how it works:
+
+### Development (PostgreSQL)
+- Uses the main `prisma/schema.prisma` file with PostgreSQL provider
+- The `npm run dev` command automatically checks and regenerates the Prisma client for PostgreSQL
+- If you see database errors after running tests, run: `npm run db:generate`
+
+### Testing (SQLite)
+- Tests automatically create a temporary SQLite database
+- A test schema file (`schema.test.prisma`) is created during test setup
+- After tests, the test schema file is left as a marker
+- The dev server detects this marker and regenerates the PostgreSQL client
+
+### Important Workflow
+
+**⚠️ IMPORTANT: Stop dev server before running tests!**
+
+The recommended workflow:
+```bash
+# 1. Stop dev server (Ctrl+C) if running
+# 2. Run tests
+npm test
+
+# 3. Start dev server (it will auto-detect and regenerate PostgreSQL client)
+npm run dev
+```
+
+**Why?** Tests generate a SQLite Prisma client, which overwrites the PostgreSQL client needed for development. The dev server automatically detects when tests have run and regenerates the PostgreSQL client, but this only works if the dev server is not already running (to avoid file locks).
+
+### Troubleshooting
+
+**If you get database errors after running tests:**
+1. Stop the dev server completely (Ctrl+C)
+2. Run: `npm run db:generate`
+3. Restart the dev server: `npm run dev`
+
+**If dev server fails to start with "file lock" error:**
+- The Prisma client file is locked (usually because dev server is already running)
+- Stop ALL dev server instances
+- Run: `npm run db:generate`
+- Start dev server: `npm run dev`
+
+**If tests fail with file lock errors:**
+- Make sure no dev server is running
+- Close any processes using the Prisma client
+- Run tests again
 
 ## Run & Test Commands
 
@@ -270,119 +170,202 @@ npm run format:check # Check code formatting
 
 **Key Principles:**
 - **Separation of Concerns** - Clear boundaries between layers
-- **Dependency Injection** - Services depend on repositories
-- **Single Responsibility** - Each module has one clear purpose
-- **Type Safety** - Full TypeScript coverage
+- **Dependency Injection** - Services depend on repositories, not database
+- **Single Responsibility** - Each class/function has one clear purpose
+- **DRY (Don't Repeat Yourself)** - Shared utilities and reusable components
 
-### Data Flow
+### Project Structure
 
-1. **User Interaction** → React Component
-2. **Component** → React Query Hook (`hooks/use-*.ts`)
-3. **Hook** → API Route (`app/api/*/route.ts`)
-4. **API Route** → Service (`src/core/*/service.ts`)
-5. **Service** → Repository (`src/core/*/repository.ts`)
-6. **Repository** → Prisma Client → Database
+```
+lab-orders-lite/
+│
+├── prisma/                    # Database schema and migrations
+│   ├── schema.prisma          # Main schema (PostgreSQL)
+│   ├── schema.test.prisma     # Test schema (SQLite, auto-generated)
+│   └── seed.ts                # Database seed script
+│
+├── src/
+│   ├── app/                   # Next.js App Router pages
+│   │   ├── (auth)/            # Authentication routes
+│   │   │   ├── login/
+│   │   │   └── register/
+│   │   ├── api/               # API routes
+│   │   │   ├── patients/      # Patient CRUD
+│   │   │   │   ├── route.ts
+│   │   │   │   └── [id]/
+│   │   │   │       └── route.ts
+│   │   │   ├── tests/         # Test CRUD
+│   │   │   │   ├── route.ts
+│   │   │   │   └── [id]/
+│   │   │   │       └── route.ts
+│   │   │   └── orders/        # Order CRUD
+│   │   │       ├── route.ts
+│   │   │       └── [id]/
+│   │   │           └── route.ts
+│   │   ├── dashboard/         # Dashboard pages
+│   │   │   ├── page.tsx
+│   │   │   ├── layout.tsx
+│   │   │   ├── patients/      # Patient management
+│   │   │   │   ├── page.tsx
+│   │   │   │   ├── new/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── [id]/
+│   │   │   │       ├── page.tsx
+│   │   │   │       └── edit/
+│   │   │   │           └── page.tsx
+│   │   │   ├── tests/         # Test management
+│   │   │   │   ├── page.tsx
+│   │   │   │   ├── new/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── [id]/
+│   │   │   │       ├── page.tsx
+│   │   │   │       └── edit/
+│   │   │   │           └── page.tsx
+│   │   │   └── orders/        # Order management
+│   │   │       ├── page.tsx
+│   │   │       ├── new/
+│   │   │       │   └── page.tsx
+│   │   │       └── [id]/
+│   │   │           └── page.tsx
+│   │   ├── globals.css        # Global styles
+│   │   ├── layout.tsx         # Root layout
+│   │   └── page.tsx           # Home page
+│   │
+│   ├── core/                  # Core business logic
+│   │   ├── patients/          # Patient domain
+│   │   │   ├── patient.repository.ts
+│   │   │   ├── patient.service.ts
+│   │   │   ├── patient.types.ts
+│   │   │   └── index.ts
+│   │   ├── orders/            # Order domain
+│   │   │   ├── order.repository.ts
+│   │   │   ├── order.service.ts
+│   │   │   ├── order.types.ts
+│   │   │   └── index.ts
+│   │   ├── tests/             # Test domain
+│   │   │   ├── test.repository.ts
+│   │   │   ├── test.service.ts
+│   │   │   ├── test.types.ts
+│   │   │   └── index.ts
+│   │   └── services.ts        # Service exports
+│   │
+│   ├── lib/                   # Utility libraries
+│   │   ├── auth.ts            # NextAuth configuration
+│   │   ├── prisma.ts          # Prisma client instance
+│   │   ├── api-handler.ts     # API route handler wrapper
+│   │   ├── api-response.ts    # API response utilities
+│   │   ├── errors.ts          # Custom error classes
+│   │   ├── logger.ts          # Logging utility
+│   │   ├── utils.ts           # Utility functions
+│   │   └── constants.ts       # Constants
+│   │
+│   ├── components/            # React components
+│   │   ├── dashboard/         # Dashboard-specific components
+│   │   ├── ui/                # Reusable UI components
+│   │   └── providers/         # Context providers
+│   │
+│   ├── hooks/                 # Custom React hooks
+│   │   └── use-patients.ts    # Patient data fetching hook
+│   │
+│   └── tests/                 # Test files
+│       ├── integration/       # Integration tests
+│       └── setup/             # Test setup utilities
+│           ├── test-db.ts     # Test database setup
+│           └── global-setup.ts # Global test setup
+│
+├── scripts/                   # Utility scripts
+│   ├── check-env.js           # Environment variable checker
+│   └── check-prisma-client.js # Prisma client checker
+│
+├── .env                       # Environment variables (not in git)
+├── .env.example               # Example environment variables
+├── .gitignore                 # Git ignore rules
+├── next.config.ts             # Next.js configuration
+├── tsconfig.json              # TypeScript configuration
+├── tailwind.config.ts         # Tailwind CSS configuration
+├── vitest.config.ts           # Vitest configuration
+├── prisma.config.ts           # Prisma configuration
+└── package.json               # Project dependencies and scripts
 
-### Features
+```
 
-**Authentication:**
-- NextAuth.js with credentials provider
-- Session-based authentication
-- Protected routes via proxy (formerly middleware)
-- Password hashing with bcrypt
+## Database Schema
 
-**State Management:**
-- React Query for server state
-- Optimistic updates for mutations
-- Automatic cache invalidation
-- URL-based pagination and search state
+### Models
 
-**Data Validation:**
-- Zod schemas for runtime validation
-- Type-safe API requests/responses
-- Form validation with error handling
+- **User** - Application users (admin, regular users)
+- **Patient** - Patient information and demographics
+- **Test** - Laboratory tests with pricing and turnaround times
+- **Order** - Lab orders with total cost and ready date calculation
+- **OrderTest** - Junction table linking orders to tests
 
-**UI/UX:**
-- Responsive design with Tailwind CSS
-- Shadcn UI components
-- Toast notifications
-- Loading states and skeletons
-- Empty states
-- Optimistic UI updates
+### Key Features
 
-**Testing:**
-- Integration tests for API routes
-- SQLite in-memory test database
-- Test utilities for mocking Prisma
-- Vitest for fast test execution
+- **Soft Deletes** - Records are marked as deleted, not physically removed
+- **Timestamps** - Automatic `createdAt` and `updatedAt` tracking
+- **Relationships** - Proper foreign key relationships between entities
 
-### API Endpoints
+## API Endpoints
 
-**Authentication:**
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/[...nextauth]` - NextAuth endpoints
+### Patients
+- `GET /api/patients` - List all patients (with pagination and search)
+- `POST /api/patients` - Create a new patient
+- `GET /api/patients/[id]` - Get patient by ID
+- `PUT /api/patients/[id]` - Update patient
+- `DELETE /api/patients/[id]` - Delete patient (soft delete)
 
-**Patients:**
-- `GET /api/patients?page=1&limit=10&search=John` - List patients (paginated, searchable)
-- `POST /api/patients` - Create patient
+### Tests
+- `GET /api/tests` - List all tests (with pagination and search)
+- `POST /api/tests` - Create a new test
+- `GET /api/tests/[id]` - Get test by ID
+- `PUT /api/tests/[id]` - Update test
+- `DELETE /api/tests/[id]` - Delete test (soft delete)
 
-**Orders:**
-- `GET /api/orders?page=1&limit=10&search=Jane` - List orders (paginated, searchable)
-- `POST /api/orders` - Create order
+### Orders
+- `GET /api/orders` - List all orders (with pagination and filters)
+- `POST /api/orders` - Create a new order (automatically calculates total cost and ready date)
+- `GET /api/orders/[id]` - Get order by ID
+- `PUT /api/orders/[id]` - Update order
+- `DELETE /api/orders/[id]` - Delete order (soft delete)
 
-**Tests:**
-- `GET /api/tests` - List all tests
-- `POST /api/tests` - Create test
+## Testing
 
-## Future Improvements
+Tests use SQLite for fast, isolated testing. The test setup automatically:
+- Creates a temporary SQLite database for each test run
+- Generates a Prisma client with SQLite schema
+- Cleans up after tests complete
 
-### Features
-- [ ] **Order Status Tracking** - Track order progress (pending, processing, completed)
-- [ ] **Email Notifications** - Send order confirmations and updates
-- [ ] **PDF Reports** - Generate printable order reports
-- [ ] **Bulk Operations** - Create multiple orders at once
-- [ ] **Advanced Filtering** - Filter by date ranges, cost ranges, status
-- [ ] **Export Functionality** - Export data to CSV/Excel
-- [ ] **Patient History** - View all orders for a specific patient
-- [ ] **Test Templates** - Create and save test combinations
-- [ ] **User Roles & Permissions** - Admin, Lab Technician, Receptionist roles
-- [ ] **Audit Logging** - Track all changes to records
+### Running Tests
 
-### Technical
-- [ ] **Real-time Updates** - WebSocket support for live order updates
-- [ ] **Caching Strategy** - Redis for session and query caching
-- [ ] **Rate Limiting** - Protect API endpoints from abuse
-- [ ] **API Documentation** - OpenAPI/Swagger documentation
-- [ ] **E2E Testing** - Playwright or Cypress tests
-- [ ] **Performance Monitoring** - APM integration
-- [ ] **Error Tracking** - Sentry or similar error tracking
-- [ ] **CI/CD Pipeline** - Automated testing and deployment
-- [ ] **Docker Support** - Containerization for easy deployment
-- [ ] **Multi-tenancy** - Support for multiple organizations
+```bash
+# Watch mode (recommended for development)
+npm test
 
-### UI/UX
-- [ ] **Dark Mode** - Theme switching
-- [ ] **Keyboard Shortcuts** - Power user features
-- [ ] **Drag & Drop** - Reorder tests in order creation
-- [ ] **Advanced Search** - Multi-field search with filters
-- [ ] **Data Visualization** - Charts and graphs for statistics
-- [ ] **Mobile App** - React Native mobile application
-- [ ] **Offline Support** - PWA with offline capabilities
+# Run once
+npm run test:run
 
-### Security
-- [ ] **2FA** - Two-factor authentication
-- [ ] **Password Reset** - Email-based password recovery
-- [ ] **Session Management** - View and manage active sessions
-- [ ] **API Keys** - Programmatic access for integrations
-- [ ] **Data Encryption** - Encrypt sensitive data at rest
+# With coverage
+npm run test:coverage
+```
 
-## Contributing
+## Deployment
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+### Environment Variables
+
+Make sure to set these in your production environment:
+- `DATABASE_URL` - PostgreSQL connection string
+- `NEXTAUTH_SECRET` - Secret key for NextAuth (generate with `openssl rand -base64 32`)
+- `NEXTAUTH_URL` - Your production URL
+
+### Build and Deploy
+
+```bash
+# Build for production
+npm run build
+
+# Start production server
+npm start
+```
 
 ## License
 
@@ -390,8 +373,4 @@ This project is private and proprietary.
 
 ## Support
 
-For issues or questions:
-- Check the console for error messages
-- Review the browser's Network tab for API errors
-- Verify database connection and environment variables
-- Check Prisma schema and migrations
+For issues and questions, please open an issue on GitHub.

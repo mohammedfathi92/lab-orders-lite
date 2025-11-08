@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon",
+    "check:env": "node scripts/check-env.js",
+    "check:prisma": "node scripts/check-prisma-client.js",
+    "dev": "npm run check:env && npm run check:prisma && nodemon",
     "dev:next": "next dev",
     "build": "next build",
     "start": "next start",
@@ -15,6 +17,7 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "db:generate": "prisma generate",
+    "db:generate:postgres": "prisma generate --schema=prisma/schema.prisma",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",

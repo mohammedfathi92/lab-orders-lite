@@ -8,6 +8,7 @@ export default defineConfig({
     environment: "node", // Use node environment for API tests
     globals: true,
     setupFiles: ["./vitest.setup.ts"],
+    globalSetup: ["./src/tests/setup/global-setup.ts"],
     testTimeout: 30000, // Increased timeout for database operations
     hookTimeout: 60000, // Increased timeout for hooks (beforeAll, afterAll, etc.) - needed for database setup
     include: ["**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
