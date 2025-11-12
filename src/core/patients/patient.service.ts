@@ -2,6 +2,7 @@ import { z } from "zod";
 import { Gender } from "@prisma/client";
 import { PatientRepository } from "./patient.repository";
 import { CreatePatientDTO, UpdatePatientDTO, PatientFilters } from "./patient.types";
+import { ConflictError } from "@/lib/errors";
 
 // Zod schemas for validation
 const genderEnum = z.nativeEnum(Gender);
@@ -75,9 +76,21 @@ export class PatientService {
 
   /**
    * Validate and create a patient
+   * Checks for duplicates before creating
    */
   async createPatient(data: unknown) {
     const validatedData = await this.create(data);
+    
+    // Check if patient already exists (same name + DOB)
+    const existingPatient = await this.repository.findDuplicate(validatedData);
+    
+    if (existingPatient) {
+      throw new ConflictError(
+        `Patient already exists with the same name and date of birth. ` +
+        `Existing patient ID: ${existingPatient.id}`
+      );
+    }
+    
     return await this.repository.create(validatedData);
   }
 
