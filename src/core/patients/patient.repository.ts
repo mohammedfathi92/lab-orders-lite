@@ -214,15 +214,11 @@ export class PatientRepository {
     // Optimize: First check database for patients with similar names (contains any word from new name)
     // This reduces the number of records we need to check in memory
     // Build OR conditions for each word in the new name
-    const nameFilters: Prisma.PatientWhereInput[] = newNameWords.map(word => ({
-      OR: [
-        {
-          name: {
-            contains: word,
-            mode: "insensitive" as const,
-          },
-        },
-      ],
+    const nameFilters = newNameWords.map(word => ({
+      name: {
+        contains: word,
+        mode: "insensitive" as const,  // Lines 222-223: Makes search case-insensitive
+      },
     }));
 
     // Find patients with same DOB AND name contains at least one word from new name
@@ -233,7 +229,7 @@ export class PatientRepository {
           gte: dobStart,
           lte: dobEnd,
         },
-        AND: [...nameFilters, { deletedAt: null }], // Name must contain at least one word from the new name
+        OR: [...nameFilters, { deletedAt: null }], // Name must contain at least one word from the new name
       },
     });
 
